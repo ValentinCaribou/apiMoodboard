@@ -62,14 +62,12 @@ const userSchema = mongoose.Schema({
 });
 
 const weekMoodSchema = mongoose.Schema({
-    email: String,
-    password:String,
-    name:String,
-    surname:String,
-    alias:String,
+    idUser: {},
+    weekMood: {}
 });
 
 const User = mongoose.model('User', userSchema);
+const Mood = mongoose.model('mood', weekMoodSchema);
 // Je vous rappelle notre route (/piscines).
 myRouter.route('/inscription')
 // J'implémente les méthodes GET, PUT, UPDATE et DELETE
@@ -114,6 +112,35 @@ myRouter.route('/')
     .all(function(req,res){
         res.json({message : "Bienvenue sur notre l'api Moodboard", methode : req.method});
     });
+
+myRouter.route('/mood')
+// all permet de prendre en charge toutes les méthodes.
+    .get(function(req,res){
+        Mood.find(function(err, mood){
+            if (err){
+                res.send(err);
+            }
+            res.json(mood);
+        });
+    })
+
+    //POST
+    .post(function(req,res){
+        // Nous utilisons le schéma Piscine
+        const mood = new Mood();
+        console.log("idUSer", req.body.idUser);
+        console.log("mood", req.body.weekMood);
+        // Nous récupérons les données reçues pour les ajouter à l'objet Piscine
+        mood.idUser = req.body.idUser;
+        mood.weekMood = req.body.weekMood;
+        //Nous stockons l'objet en base
+        mood.save(function(err){
+            if(err){
+                res.send(err);
+            }
+            res.send({message : 'le mood est bien enregistrer'});
+        })
+    })
 
 // Nous demandons à l'application d'utiliser notre routeur
 app.use(myRouter);
