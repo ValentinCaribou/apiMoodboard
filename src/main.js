@@ -140,7 +140,43 @@ myRouter.route('/mood')
             }
             res.send({message : 'le mood est bien enregistrer'});
         })
+    });
+
+myRouter.route('/mood/:mood_id')
+    .get(function(req,res){
+        const mood = new Mood();
+        Mood.findById(req.params.mood_id, function(err, mood) {
+            if (err)
+                res.send(err);
+            res.json(mood);
+        });
     })
+    .put(function(req,res){
+        const mood = new Mood();
+        Mood.findById(req.params.mood_id, function(err, mood) {
+            if (err){
+                res.send(err);
+            }
+            mood.idUser = req.body.idUser;
+            mood.weekMood = req.body.weekMood;
+            mood.save(function(err){
+                if(err){
+                    res.send(err);
+                }
+                res.json({message : 'Bravo, mise à jour des données OK'});
+            });
+        });
+    })
+    .delete(function(req,res){
+        const mood = new Mood();
+        Mood.remove({_id: req.params.mood_id}, function(err, mood){
+            if (err){
+                res.send(err);
+            }
+            res.json({message:"Bravo, piscine supprimée"});
+        });
+
+    });
 
 // Nous demandons à l'application d'utiliser notre routeur
 app.use(myRouter);
