@@ -173,9 +173,8 @@ myRouter.route('/mood/:mood_id')
             if (err){
                 res.send(err);
             }
-            res.json({message:"Bravo, piscine supprimée"});
+            res.json({message:"Bravo, mood supprimée"});
         });
-
     });
 
 // Nous demandons à l'application d'utiliser notre routeur
