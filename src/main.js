@@ -66,8 +66,14 @@ const weekMoodSchema = mongoose.Schema({
     weekMood: {}
 });
 
+const userConnexionSchema = mongoose.Schema({
+    email: String,
+    password: String
+});
+
 const User = mongoose.model('User', userSchema);
 const Mood = mongoose.model('mood', weekMoodSchema);
+const UserConnexion = mongoose.model('UserConnexion', userConnexionSchema);
 // Je vous rappelle notre route (/piscines).
 myRouter.route('/inscription')
 // J'implémente les méthodes GET, PUT, UPDATE et DELETE
@@ -173,8 +179,25 @@ myRouter.route('/mood/:mood_id')
             if (err){
                 res.send(err);
             }
-            res.json({message:"Bravo, mood supprimée"});
+            res.json({message:"Bravo, piscine supprimée"});
         });
+    });
+
+myRouter.route('/login')
+//POST
+    .post(function(req,res){
+        // Nous utilisons le schéma Piscine
+        const user = new User();
+        console.log(req.body);
+        // Nous récupérons les données reçues pour les ajouter à l'objet Piscine
+        user.email = req.body.email;
+        user.password = req.body.password;
+        //Nous stockons l'objet en base
+        User.find({email: user.email, password: user.password},function(err, user){
+            if (err)
+                res.send(err);
+            res.json(user);
+        })
     });
 
 // Nous demandons à l'application d'utiliser notre routeur
