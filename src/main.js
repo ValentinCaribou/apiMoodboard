@@ -191,12 +191,17 @@ myRouter.route('/login')
         console.log(req.body);
         // Nous récupérons les données reçues pour les ajouter à l'objet Piscine
         user.email = req.body.email;
-        user.password = req.body.password;
+        let password = req.body.password;
         //Nous stockons l'objet en base
-        User.find({email: user.email, password: user.password},function(err, user){
-            if (err)
-                res.send(err);
-            res.json(user);
+        User.find({email: user.email},function(err, user){
+            console.log(user);
+            console.log(user[0].password, " ", password);
+            if (user[0].password === password){
+                res.json(user);
+            } else {
+                // res.json({message:"Erreur lors de l'authentification"});
+                res.status(500).send('Erreur lors de l\'authentification');
+            }
         })
     });
 
