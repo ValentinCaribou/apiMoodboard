@@ -199,7 +199,6 @@ myRouter.route('/login')
             if (user[0].password === password){
                 res.json(user);
             } else {
-                // res.json({message:"Erreur lors de l'authentification"});
                 res.status(500).send('Erreur lors de l\'authentification');
             }
         })
