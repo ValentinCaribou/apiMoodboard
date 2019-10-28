@@ -140,11 +140,12 @@ myRouter.route('/mood')
         mood.idUser = req.body.idUser;
         mood.weekMood = req.body.weekMood;
         //Nous stockons l'objet en base
-        mood.save(function(err){
+        mood.save(function(err, newMood){
             if(err){
                 res.send(err);
             }
-            res.send({message : 'le mood est bien enregistrer'});
+            console.log(newMood.id);
+            res.send({message : newMood});
         })
     });
 
@@ -179,7 +180,7 @@ myRouter.route('/mood/:mood_id')
             if (err){
                 res.send(err);
             }
-            res.json({message:"Bravo, piscine supprimée"});
+            res.json({message:"Mood supprimée"});
         });
     });
 
