@@ -56,6 +56,7 @@ const myRouter = express.Router();
 const userSchema = mongoose.Schema({
     email: String,
     password:String,
+    role:String,
     name:String,
     surname:String,
     alias:String,
@@ -90,10 +91,10 @@ myRouter.route('/inscription')
     .post(function(req,res){
         // Nous utilisons le schéma Piscine
         const user = new User();
-        console.log(req.body);
         // Nous récupérons les données reçues pour les ajouter à l'objet Piscine
         user.email = req.body.email;
         user.password = req.body.password;
+        user.role = req.body.role;
         user.name = req.body.name;
         user.surname = req.body.surname;
         //Nous stockons l'objet en base
